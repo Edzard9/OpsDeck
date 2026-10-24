@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cara Pakai — OpsDeck</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',system-ui,sans-serif}.mono{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen">
+
+<header class="border-b border-slate-800/70 sticky top-0 bg-slate-950/85 backdrop-blur z-10">
+  <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-white font-extrabold text-sm">O</div>
+      <span class="font-bold text-white">OpsDeck</span>
+      <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300">Panduan</span>
+    </div>
+    <a href="/" class="text-sm text-cyan-400 hover:text-cyan-300 font-medium">← Kembali ke Dashboard</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-5 py-10 space-y-10">
+  <section>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">Cara Pakai OpsDeck</h1>
+    <p class="mt-4 text-slate-400 leading-relaxed">OpsDeck adalah dashboard untuk memantau VPS-mu dari satu layar. Semua angka dan log yang tampil di sini <strong class="text-slate-200">asli, dibaca langsung dari server</strong> dan diperbarui otomatis tiap beberapa detik — bukan simulasi. Halaman ini menjelaskan cara membaca tiap bagiannya dengan bahasa sehari-hari.</p>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">1. Telemetri — kesehatan server saat ini</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p><strong class="text-white">CPU Load</strong> — seberapa sibuk prosesor. Di bawah 50% itu santai; mendekati 100% terus-menerus berarti server bekerja sangat keras.</p>
+      <p><strong class="text-white">RAM</strong> — pemakaian memori. Yang perlu diwaspadai kalau sudah di atas 85%.</p>
+      <p><strong class="text-white">Disk Usage</strong> — ruang penyimpanan yang terpakai dari total kapasitas.</p>
+      <p><strong class="text-white">API Round-Trip</strong> — waktu tempuh data dari browser-mu ke server dan kembali. Kecil = koneksi Tailscale-mu lancar.</p>
+      <p><strong class="text-white">Grafik Resource Usage History</strong> — riwayat CPU &amp; RAM beberapa menit terakhir, berguna untuk melihat lonjakan.</p>
+      <p><strong class="text-white">Network &amp; VPS Info</strong> — lalu lintas data masuk/keluar, kecepatan disk, status Docker, dan jumlah layanan yang aktif.</p>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">2. Daftar proses — apa saja yang sedang berjalan</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p>Tabel ini menampilkan layanan asli yang hidup di server, lengkap dengan <strong class="text-white">uptime</strong> (sudah berapa lama berjalan), pemakaian <strong class="text-white">CPU</strong>, dan <strong class="text-white">memori</strong>.</p>
+      <p>Contoh yang biasa muncul: <span class="mono text-cyan-300 text-sm">code-server</span> (VS Code di browser), <span class="mono text-cyan-300 text-sm">Caddy</span>, <span class="mono text-cyan-300 text-sm">Tailscale</span>, dan <span class="mono text-cyan-300 text-sm">opencode</span> — yang terakhir ini hanya muncul saat ada pekerjaan build yang sedang jalan.</p>
+      <p class="text-slate-400 text-sm">Untuk sekarang daftar ini sifatnya lihat saja (read-only): belum bisa menyalakan/mematikan layanan dari dashboard.</p>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">3. Log — dua mode: Teknis &amp; Awam</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p><strong class="text-white">Mode Teknis</strong> menampilkan log mentah persis seperti ditulis sistem — cocok untuk yang paham membaca log.</p>
+      <p><strong class="text-white">Mode Awam</strong> menerjemahkan log yang sama menjadi kalimat biasa. Terjemahannya dibuat oleh aturan tetap di server — tanpa AI, tanpa biaya token, dan langsung tampil. Warna titik di tiap kejadian:</p>
+      <ul class="space-y-1.5">
+        <li><span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span><strong class="text-white">Hijau</strong> — kabar baik (mis. tunnel tersambung, login berhasil).</li>
+        <li><span class="inline-block w-2.5 h-2.5 rounded-full bg-slate-400 mr-2"></span><strong class="text-white">Abu</strong> — aktivitas normal sehari-hari.</li>
+        <li><span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 mr-2"></span><strong class="text-white">Kuning</strong> — perlu diketahui, biasanya pulih sendiri (mis. tunnel menyambung ulang, percobaan login gagal dari internet).</li>
+        <li><span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 mr-2"></span><strong class="text-white">Merah</strong> — ada yang gagal dan layak dicek.</li>
+      </ul>
+      <p class="text-slate-400 text-sm">Ganti mode lewat tombol <strong class="text-slate-200">Mode Awam / Mode Teknis</strong> di kepala terminal. Di Mode Awam, tab-tab di terminal berubah fungsi menjadi saringan: Semua, Waspada, Info.</p>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">4. Dock bawah — menu cepat</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p>Pil kaca yang melayang di bawah layar adalah jalan pintas ke bagian-bagian halaman: Overview, Telemetry, Agents, dan Logs. Kaca penandanya (lensa) berpindah saat menu <strong class="text-white">diklik</strong>, atau saat dock <strong class="text-white">diseret</strong> dengan mouse/jari. Ia juga mengikuti posisimu saat halaman digulir.</p>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">5. Keamanan — kenapa harus lewat Tailscale</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p>OpsDeck hanya mau diakses lewat jaringan <strong class="text-white">Tailscale</strong> milikmu. Servernya tidak membuka pintu di alamat internet publik, jadi orang yang tidak tergabung di Tailscale-mu <strong class="text-white">tidak bisa membuka halaman ini sama sekali</strong> — bukan sekadar tidak tahu kata sandinya.</p>
+      <p>Konsekuensinya: kalau halaman tidak terbuka, pastikan Tailscale di HP/laptop-mu sedang aktif dan masuk ke akun yang sama.</p>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h2 class="text-xl font-bold text-white">6. Kalau data berhenti bergerak</h2>
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 space-y-2.5 text-[15px] leading-relaxed text-slate-300">
+      <p>Coba urutan ini: (1) muat ulang halaman; (2) tekan tombol sinkron (ikon panah melingkar) di pil nama di atas; (3) cek Tailscale-mu aktif. Kalau masih diam, kemungkinan program server OpsDeck di VPS sedang mati (mis. setelah VPS restart) dan perlu dinyalakan lagi.</p>
+    </div>
+  </section>
+
+  <footer class="pt-4 pb-10 border-t border-slate-800/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500">
+    <span>OpsDeck Telemetry Suite © 2026</span>
+    <span class="flex gap-5">
+      <a href="/" class="text-cyan-400 hover:text-cyan-300">Dashboard</a>
+      <a href="https://github.com/Edzard9/OpsDeck" target="_blank" rel="noopener" class="text-cyan-400 hover:text-cyan-300">GitHub</a>
+    </span>
+  </footer>
+</main>
+</body>
+</html>
