@@ -1,31 +1,33 @@
 # OpsDeck
 
-Dashboard web untuk memantau VPS dari satu layar: telemetri asli (CPU, RAM, disk, jaringan), daftar proses yang sedang berjalan, dan log sistem langsung dari journal — dalam dua mode tampilan, **Teknis** dan **Awam**.
+English | [Bahasa Indonesia](README.id.md)
 
-Semua data yang tampil **dibaca langsung dari server** dan diperbarui otomatis. Tidak ada data simulasi.
+A web dashboard that watches your VPS from a single screen: native telemetry (CPU, RAM, disk, network), a list of running processes, and system logs straight from the journal, in two view modes: **Technical** and **Plain**.
 
-![Telemetri OpsDeck](docs/screenshots/telemetri.png)
+Everything shown is **read directly from the server** and refreshes automatically. No simulated data.
 
-## Fitur
+![OpsDeck telemetry](docs/screenshots/telemetri.png)
 
-- **Telemetri real-time** — CPU, RAM, disk, laju jaringan & disk I/O, dibaca dari `/proc` dan diperbarui tiap 3 detik, lengkap dengan grafik riwayat.
-- **Daftar proses asli** — layanan yang benar-benar berjalan di server (code-server, Caddy, Tailscale, opencode saat build, dll) beserta uptime, CPU, dan memori.
-- **Log dua mode** — Mode Teknis menampilkan journal mentah. Mode Awam menerjemahkannya menjadi kalimat sehari-hari berkode warna (baik / normal / waspada / gagal) memakai **aturan tetap di server — tanpa AI, tanpa token**.
-- **Identitas dinamis** — nama server dan IP Tailscale diambil otomatis dari mesin; tidak ada alamat yang ditulis manual di HTML.
-- **Khusus Tailscale** — server hanya mendengarkan di interface Tailscale, sehingga halaman ini tidak terbuka dari internet publik.
-- **Halaman Cara Pakai** — panduan berbahasa awam di `panduan.html`.
+## Features
 
-![Daftar proses & log Mode Awam](docs/screenshots/agen-mode-awam.png)
+- **Real-time telemetry** - CPU, RAM, disk, network & disk I/O rates, read from `/proc` and refreshed every 3 seconds, with history graphs.
+- **Real process list** - the services actually running on the server (code-server, Caddy, Tailscale, opencode during builds, etc.) with uptime, CPU, and memory.
+- **Two-mode logs** - Technical mode shows the raw journal. Plain mode translates it into color-coded everyday sentences (good / normal / warning / failing) using **fixed rules on the server: no AI, no tokens**.
+- **Dynamic identity** - the server name and Tailscale IP are picked up automatically from the machine; no address is written into the HTML by hand.
+- **Tailscale only** - the server listens on the Tailscale interface alone, so this page is not reachable from the public internet.
+- **How-to page** - a plain-language guide at `panduan.html`.
 
-## Menjalankan
+![Process list & Plain-mode log](docs/screenshots/agen-mode-awam.png)
 
-Persyaratan: Linux dengan systemd (`journalctl`), Python 3 (hanya pustaka standar), dan Tailscale aktif.
+## Running
+
+Requirements: Linux with systemd (`journalctl`), Python 3 (standard library only), and an active Tailscale.
 
 ```bash
 python3 server.py
 ```
 
-Server akan mendeteksi IP Tailscale mesin ini secara otomatis, lalu melayani dashboard di port `8091`. Buka dari perangkat mana pun yang tergabung di tailnet yang sama:
+The server detects this machine's Tailscale IP automatically, then serves the dashboard on port `8091`. Open it from any device joined to the same tailnet:
 
 ```
 http://<ip-tailscale-server>:8091
@@ -33,30 +35,30 @@ http://<ip-tailscale-server>:8091
 
 ## API
 
-| Endpoint | Isi |
+| Endpoint | Contents |
 |---|---|
-| `GET /api/stats` | Hostname, IP Tailscale, CPU, RAM, disk, laju jaringan & disk, load, uptime, status Docker |
-| `GET /api/agents` | Grup proses yang berjalan beserta uptime, CPU, dan memori |
-| `GET /api/logs` | 45 baris terakhir `journalctl` |
-| `GET /api/feed` | Log yang sama, diterjemahkan aturan tetap menjadi kejadian berbahasa sehari-hari (untuk Mode Awam) |
+| `GET /api/stats` | Hostname, Tailscale IP, CPU, RAM, disk, network & disk rates, load, uptime, Docker status |
+| `GET /api/agents` | Running process groups with uptime, CPU, and memory |
+| `GET /api/logs` | Last 45 lines of `journalctl` |
+| `GET /api/feed` | The same logs, translated by fixed rules into everyday-language events (for Plain mode) |
 
-## Keamanan
+## Security
 
-- Server **hanya** terikat (bind) ke alamat IP Tailscale — tidak mendengarkan di alamat publik maupun localhost.
-- Nama server dan IP tidak ditulis di dalam HTML; keduanya datang dari API saat halaman dibuka.
-- Repo ini tidak memuat kredensial apa pun. Tangkapan layar di `docs/screenshots/` sudah diperiksa: IP pada tangkapan layar telah disensor oleh pemiliknya.
+- The server binds to the Tailscale IP address **only**; it never listens on a public address or on localhost.
+- The server name and IP are not written into the HTML; both come from the API when the page loads.
+- This repo contains no credentials. The screenshots in `docs/screenshots/` have been checked: the IPs in the screenshots were redacted by the owner.
 
-## Struktur
+## Structure
 
 ```
 .
-├── server.py        # server HTTP + API (Python, pustaka standar saja)
-├── index.html       # dashboard utama
-├── panduan.html     # halaman Cara Pakai
+├── server.py        # HTTP server + API (Python, stdlib only)
+├── index.html       # main dashboard
+├── panduan.html     # How-to page
 └── docs/
-    └── screenshots/ # tangkapan layar dashboard
+    └── screenshots/ # dashboard screenshots
 ```
 
-## Teknologi
+## Technology
 
 Python 3 (stdlib `http.server`), HTML + Tailwind CSS (CDN) + Chart.js, `journalctl`, Tailscale.
